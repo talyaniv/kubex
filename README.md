@@ -13,7 +13,6 @@ chmod 700 kubex.sh
 
 * reduces the hassle of getting a login token, copying to clipboard and opening a proxy session
 * easily switching between contexts without needing to remember complex context name (e.g. in AWS EKS)
-  -> return types must match! (deduced from error case)
 
 Copyright (c) 2018 Tal Yaniv
 
