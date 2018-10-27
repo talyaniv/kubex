@@ -21,7 +21,7 @@ License: http://opensource.org/licenses/MIT
 
 ## arguments
 ```
-l or --list lists-contexts   list all kubernetes contexts
+l or --list-contexts         list all kubernetes contexts
                              use the index numbers to switch conexts with --context command
 
 t or --token                 generates a login token and copies to clipboard
@@ -31,7 +31,7 @@ or --context <context index> switches to a context from the list
                              use l or --list to see the list
 
 p or --proxy                 gets a token and copies to clipboard
-                             open Mac Chrome app with the login page
+                             opens Mac Chrome app with the login page
                              starts a proxy session
 ```
 

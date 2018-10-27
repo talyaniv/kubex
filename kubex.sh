@@ -135,7 +135,7 @@ if [ $# -eq 0 ]; then
     echo "example:"
     echo ".kubex.sh l"
     echo
-    echo "l or --list lists-contexts   list all kubernetes contexts"
+    echo "l or --list-contexts         list all kubernetes contexts"
     echo "                             use the index numbers to switch conexts with --context command"
     echo
     echo "t or --token                 generates a login token and copies to clipboard"
@@ -145,6 +145,6 @@ if [ $# -eq 0 ]; then
     echo "                             use l or --list to see the list"
     echo
     echo "p or --proxy                 gets a token and copies to clipboard"
-    echo "                             open Mac Chrome app with the login page"
+    echo "                             opens Mac Chrome app with the login page"
     echo "                             starts a proxy session"
 fi
