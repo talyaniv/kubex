@@ -7,12 +7,49 @@
 #   internal methods   #
 ########################
 
+# setup does the following:
+# 1. Configures AWS with your global credentials, or with a profile if given to the '--profile' parameter.
+# 2. Downloads aws-iam-authenticator into '/usr/local/bin/' and gives it running permissions
+# 3. Calling the 'aws eks' commands for all environments
+
+function setup
+{
+    for arg in "$@"
+    do
+        case $arg in
+            --profile=*)
+            PROFILE="${arg#*=}"
+            shift
+            ;;
+        esac
+    done
+
+    if [[ -z "$PROFILE" ]]; then
+        echo "No Profile given, using defaults"
+        printf 'AKIAIKG452VK6YA2CJXA\nk9pQp1iKRSy+H+J77XLltGnRecBZkOktY9d9vkuF\nus-east-1\n\n' | aws configure
+    else
+        echo "Cofiguring according to $PROFILE"
+        aws configure --profile $PROFILE
+    fi
+
+    echo "Downloading aws-iam-authenticator to /usr/local/bin/aws-iam-authenticator..."
+    curl https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/darwin/amd64/aws-iam-authenticator --output /usr/local/bin/aws-iam-authenticator
+    chmod 755 /usr/local/bin/aws-iam-authenticator
+
+    echo "Updateing kubeconfig for dev, qa, staging, production..."
+    aws eks update-kubeconfig --name develop
+    aws eks update-kubeconfig --name qa
+    aws eks update-kubeconfig --name staging
+    aws eks update-kubeconfig --name production --region us-west-2
+}
+
+
 # get_kube_token will get your kubernetes (may take a few seconds) and copy it to your clipboard
 
 function get_kube_token {
     echo "getting token..."
     RES=`kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep eks-admin | awk '{print $1}')`
-    echo ${RES#*token: } | pbcopy
+    echo ${RES#*token: } | cut -f1 -d" " | pbcopy
     echo "token copied to clipboard"
 }
 
@@ -50,7 +87,12 @@ function get_contexts {
 #   commands execution   #
 ##########################
 
-
+# ./kubex.sh s
+# or
+# ./kubex.sh --setup
+if [ "$1" == "s" ] || [ "$1" == "--setup" ]; then
+    setup
+fi
 
 # ./kubex.sh t
 # or
@@ -147,4 +189,9 @@ if [ $# -eq 0 ]; then
     echo "p or --proxy                 gets a token and copies to clipboard"
     echo "                             opens Mac Chrome app with the login page"
     echo "                             starts a proxy session"
+    echo
+    echo "s [--profile=profile_name]"
+    echo "or --setup [--profile=profile_name]"
+    echo "                             Configures aws to the given profile or to the global credentials if --profile is missing,"
+    echo "                             downloads aws-iam-authenticator, and runs 'aws eks' commands for all the environments"
 fi
