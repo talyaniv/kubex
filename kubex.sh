@@ -193,5 +193,5 @@ if [ $# -eq 0 ]; then
     echo "s [--profile=profile_name]"
     echo "or --setup [--profile=profile_name]"
     echo "                             Configures aws to the given profile or to the global credentials if --profile is missing,"
-    echo "                             downloads aws-iam-authenticator, and runs 'aws eks' commands for all the environments"
+    echo "                             downloads aws-iam-authenticator into /usr/local/bin, and runs 'aws eks' commands for all the environments"
 fi

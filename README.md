@@ -33,6 +33,10 @@ or --context <context index> switches to a context from the list
 p or --proxy                 gets a token and copies to clipboard
                              opens Mac Chrome app with the login page
                              starts a proxy session
+s [--profile=profile_name]
+or or --setup [--profile=profile_name]
+							 Configures aws to the given profile or to the global credentials if --profile is missing,
+							 downloads aws-iam-authenticator into /usr/local/bin, and runs 'aws eks' commands for all the environments
 ```
 
 ## note about the --proxy method
